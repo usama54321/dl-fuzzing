@@ -8,7 +8,6 @@ import net.tzolov.cv.mtcnn.FaceAnnotation.BoundingBox;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.image.WritableRaster;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,19 +20,20 @@ import javax.imageio.ImageIO;
 public class App {
     private static String ONET_SAMPLE_IMAGE = "/home/usama/ml_system/java-app/tf-java/img.jpeg";
     private static boolean DEBUG = true;
-    public static int[] convertGreyImg(BufferedImage inp) {
-        int w = inp.getWidth();
-        int h = inp.getHeight();
+    private static int WIDTH = 256;
+    private static int HEIGHT = 256;
 
-        int[] pixels = inp.getRGB(0,0,256,256, null, 0, 256);//new int[h * w];
-        //inp.getPixels(pixels, 0, w, 0, 0, w, h);
+    public static int[] convertGreyImg(int[] pixels) {
+        //int w = inp.getWidth();
+        //int h = inp.getHeight();
 
-        //int[][] result = new int[h][w];
-        int[] result = new int[w * h];
+        //int[] pixels = inp.getRGB(0,0,256,256, null, 0, 256);//new int[h * w];
+
+        int[] result = new int[WIDTH * HEIGHT];
         int alpha = 0xFF << 24;
-        for(int i = 0; i < h; i++)	{
-            for(int j = 0; j < w; j++) {
-                int val = pixels[w * i + j];
+        for(int i = 0; i < HEIGHT; i++)	{
+            for(int j = 0; j < WIDTH; j++) {
+                int val = pixels[WIDTH * i + j];
 
 
                 int red = ((val >> 16) & 0xFF);
@@ -42,19 +42,18 @@ public class App {
 
                 int grey = (int)((float) red * 0.3 + (float)green * 0.59 + (float)blue * 0.11);
                 grey = alpha | (grey << 16) | (grey << 8) | grey;
-                result[w * i + j] = grey;
+                result[WIDTH * i + j] = grey;
             }
         }
         return result;
     }
 
-    public static int laplacian(BufferedImage inp) {
-        //Bitmap bitmapScale = Bitmap.createScaledBitmap(bitmap, INPUT_IMAGE_SIZE, INPUT_IMAGE_SIZE, true);
+    public static int laplacian(int[] pixels) {
 
         int[][] laplace = {{0, 1, 0}, {1, -4, 1}, {0, 1, 0}};
         int size = laplace.length;
         int LAPLACE_THRESHOLD = 50;
-        int[] img = convertGreyImg(inp);
+        int[] img = convertGreyImg(pixels);
 
         if (DEBUG) {
             BufferedImage image = new BufferedImage(256,256, BufferedImage.TYPE_INT_ARGB);
@@ -66,8 +65,8 @@ public class App {
             }
         }
 
-        int height = 256;
-        int width = 256;
+        int height = HEIGHT;
+        int width = WIDTH;
 
         int score = 0;
         for (int x = 0; x < height - size + 1; x++){
@@ -87,6 +86,13 @@ public class App {
         return score;
     }
 
+    public static int getWidth() {
+        return WIDTH;
+    }
+
+    public static int getHeight() {
+        return HEIGHT;
+    }
     public static void main(String[] args) throws Exception {
         //System.out.println("Hello TensorFlow " + TensorFlow.version());
 
@@ -114,12 +120,13 @@ public class App {
         if(croppedImage != null) {
             Image tmp = croppedImage.getScaledInstance(256,256,Image.SCALE_SMOOTH);
             BufferedImage resized = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+            int[] pixels = resized.getRGB(0,0,256,256, null, 0, 256);//new int[h * w];
 
             Graphics2D g2d = resized.createGraphics();
             g2d.drawImage(tmp, 0, 0, null);
             g2d.dispose();
 
-            int laplacian = laplacian(resized);
+            int laplacian = laplacian(pixels);
 
             if (laplacian > 1000) {
                 System.out.println("true");
