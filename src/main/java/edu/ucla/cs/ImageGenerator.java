@@ -20,21 +20,17 @@ public class ImageGenerator extends Generator<Img> {
         w = 256;h = 256;
         int[] data = new int[w * h];
 
-        Random r = random.toJDKRandom();
-        //random.nextInt();
+        /*
         for(int i = 0; i < 100; i++) {
             for(int j = 0; j < 256; j++) {
                 data[w * i + j] = random.nextInt();
             }
         }
-        /*
+        */
         int alpha = 0xFF << 24;
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
-                //random.nextInt();
-                //
-                //random.nextInt();
-                int val = r.nextInt();
+                int val = random.nextInt();
                 int red = ((val >> 16) & 0xFF);
                 int green = ((val >> 8) & 0xFF);
                 int blue = (val & 0xFF);
@@ -45,9 +41,8 @@ public class ImageGenerator extends Generator<Img> {
                 data[w * i + j] = grey;
             }
         }
-        */
+
         Img im = new Img(data);
-        System.out.println("here");
         return im;
     }
 }
