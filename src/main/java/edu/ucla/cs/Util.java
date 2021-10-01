@@ -4,6 +4,9 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.awt.Graphics2D;
 
 public class Util {
@@ -35,5 +38,17 @@ public class Util {
         g2d.dispose();
 
         return resized;
+    }
+
+
+    public static String readFile(String path) throws IOException {
+        File file = new File(path);
+        FileInputStream fis = new FileInputStream(file);
+
+        //just read whole file at once
+        byte[] data = new byte[(int) file.length()];
+        fis.read(data);
+        fis.close();
+        return new String(data, "UTF-8");
     }
 }
