@@ -15,10 +15,9 @@ public class Util {
         int[] data = new int[width * height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                int val = random.nextInt();
-                int red = ((val >> 16) & 0xFF);
-                int green = ((val >> 8) & 0xFF);
-                int blue = (val & 0xFF);
+                int red = ((random.nextInt() >> 16) & 0xFF);
+                int green = ((random.nextInt() >> 8) & 0xFF);
+                int blue = (random.nextInt() & 0xFF);
 
                 int grey = (int)((float) red * 0.3 + (float)green * 0.59 + (float)blue * 0.11);
 
