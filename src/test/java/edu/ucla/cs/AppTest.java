@@ -22,7 +22,7 @@ public class AppTest
      * Rigourous Test :-)
      */
     @Fuzz
-    public void testProgramWithoutModel(@From(ImageGenerator.class) Img data) throws ArrayIndexOutOfBoundsException {
+    public void testProgramWithoutModel(@From(ImageGenerator.class) Img data) {
         App a = new App();
         int[] image = data.data;
         int laplacian = a.laplacian(image);
