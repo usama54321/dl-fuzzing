@@ -120,11 +120,12 @@ public class App {
         if(croppedImage != null) {
             Image tmp = croppedImage.getScaledInstance(256,256,Image.SCALE_SMOOTH);
             BufferedImage resized = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
-            int[] pixels = resized.getRGB(0,0,256,256, null, 0, 256);//new int[h * w];
 
             Graphics2D g2d = resized.createGraphics();
             g2d.drawImage(tmp, 0, 0, null);
             g2d.dispose();
+
+            int[] pixels = resized.getRGB(0,0,256,256, null, 0, 256);//new int[h * w];
 
             int laplacian = laplacian(pixels);
 
