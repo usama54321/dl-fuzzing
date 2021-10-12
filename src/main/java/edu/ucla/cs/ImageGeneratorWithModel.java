@@ -60,7 +60,6 @@ public class ImageGeneratorWithModel extends Generator<Img> {
         try {
             inputImage = ImageIO.read(new File(IMAGES[COUNT]));
         } catch (Exception e) {
-            System.out.println("SADGE");
             e.printStackTrace();
             return null;
         }
@@ -78,7 +77,6 @@ public class ImageGeneratorWithModel extends Generator<Img> {
         try {
             faceAnnotations = mtcnnService.faceDetection(inputImage);
         } catch (Exception e) {
-            System.out.println("HERE");
             e.printStackTrace();
             return null;
         }
@@ -87,7 +85,6 @@ public class ImageGeneratorWithModel extends Generator<Img> {
         BoundingBox b = faceAnnotations[0].getBoundingBox();
         BufferedImage croppedImage = inputImage.getSubimage(b.getX(), b.getY(), b.getW(), b.getH());
 
-        System.out.println("HERE");
         BufferedImage resized = Util.resizeImage(croppedImage, w, h);
         int[] pixels = resized.getRGB(0,0,256,256, null, 0, 256);//new int[h * w];
 
