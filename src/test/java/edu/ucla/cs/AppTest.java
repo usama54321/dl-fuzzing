@@ -23,13 +23,26 @@ public class AppTest
      */
     @Fuzz
     public void testProgramWithoutModel(@From(ImageGenerator.class) Img data) {
-        App a = new App();
         int[] image = data.data;
-        int laplacian = a.laplacian(image);
+        int laplacian = App.laplacian(image);
         if (laplacian > 1000) {
             org.junit.Assume.assumeTrue(laplacian > 1000);
         } else {
             org.junit.Assume.assumeTrue(laplacian <= 1000);
+        }
+    }
+
+    @Fuzz
+    public void testProgramWithModel(@From(ImageGeneratorWithModel.class) Img data) {
+
+        int[] image = data.data;
+        int laplacian = App.laplacian(image);
+        if (laplacian > 1000) {
+            //org.junit.Assume.assumeTrue(laplacian > 1000);
+            //@TODO add better side effects so doesnt get optimized away?
+            System.out.println("true");
+        } else {
+            System.out.println("false");
         }
     }
 }
