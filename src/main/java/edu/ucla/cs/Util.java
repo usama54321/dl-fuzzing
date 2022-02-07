@@ -10,20 +10,23 @@ import java.io.IOException;
 import java.awt.Graphics2D;
 
 public class Util {
-    public static int[] getRandomImage(SourceOfRandomness random, int height, int width) {
-        int alpha = 0xFF << 24;
-        int[] data = new int[width * height];
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                int c = random.nextInt();
-                int red = c & 0xFF;
-                int green = (c >> 8) & 0xFF;
-                int blue = (c >> 16 )& (0xFF);
+    public static BufferedImage getRandomBufferedImage(SourceOfRandomness random, int width, int height) {
+        int[] data = getRandomImage(random, width, height);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+        for(int y = 0; y < height; y++)
+            for(int x = 0; x < width; x++)
+                image.setRGB(x, y, data[x * height + y]);
+        return image;
+    }
 
+    public static int[] getRandomImage(SourceOfRandomness random, int width, int height) {
+        int[] data = new int[width * height];
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int c = random.nextInt();
                 int grey = (int)((float) red * 0.3 + (float)green * 0.59 + (float)blue * 0.11);
 
-                grey = alpha | (grey << 16) | (grey << 8) | grey;
-                data[width * i + j] = grey;
+                data[width * y + x] = c;
             }
         }
         return data;
