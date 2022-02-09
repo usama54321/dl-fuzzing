@@ -1,4 +1,5 @@
 # dl-fuzzing
+This repo contains basic tests written on top of [JQF](https://github.com/usama54321/jqf), using Java implementations of some DL applications from [https://github.com/usama54321/dl-java-apps](this) repo.
 
 Requirements
 1) Java >= 9. Tested with Java 11.
