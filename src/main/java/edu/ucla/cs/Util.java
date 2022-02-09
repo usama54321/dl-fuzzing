@@ -24,8 +24,6 @@ public class Util {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int c = random.nextInt();
-                int grey = (int)((float) red * 0.3 + (float)green * 0.59 + (float)blue * 0.11);
-
                 data[width * y + x] = c;
             }
         }
